@@ -1,0 +1,38 @@
+[
+    {
+      "id": 101,
+      "nombre": "Laptop",
+      "desc": "Laptop de 15 pulgadas con 16GB RAM",
+      "precio": 1200.99,
+      "imagen": "laptop.jpg"
+    },
+    {
+      "id": 102,
+      "nombre": "Smartphone",
+      "desc": "Smartphone de 6.5 pulgadas con 128GB de almacenamiento",
+      "precio": 799.49,
+      "imagen": "smartphone.jpg"
+    },
+    {
+      "id": 103,
+      "nombre": "Auriculares",
+      "desc": "Auriculares inalámbricos con cancelación de ruido",
+      "precio": 199.99,
+      "imagen": "auriculares.jpg"
+    },
+    {
+      "id": 104,
+      "nombre": "Monitor",
+      "desc": "Monitor 4K de 27 pulgadas",
+      "precio": 399.99,
+      "imagen": "monitor.jpg"
+    },
+    {
+      "id": 105,
+      "nombre": "Teclado",
+      "desc": "Teclado mecánico retroiluminado",
+      "precio": 89.99,
+      "imagen": "teclado.jpg"
+    }
+  ]
+  

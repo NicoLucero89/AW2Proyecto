@@ -1,0 +1,38 @@
+[
+    {
+      "id": 1,
+      "nombre": "Nico",
+      "apellido": "Ale",
+      "email": "nico.ale@gmail.com",
+      "contraseña": "Juan1234!"
+    },
+    {
+      "id": 2,
+      "nombre": "María",
+      "apellido": "Gómez",
+      "email": "maria.gomez@gmail.com",
+      "contraseña": "Maria5678!"
+    },
+    {
+      "id": 3,
+      "nombre": "Carlos",
+      "apellido": "López",
+      "email": "carlos.lopez@gmail.com",
+      "contraseña": "Carlos9012!"
+    },
+    {
+      "id": 4,
+      "nombre": "Ana",
+      "apellido": "Martínez",
+      "email": "ana.martinez@gmail.com",
+      "contraseña": "Ana3456!"
+    },
+    {
+      "id": 5,
+      "nombre": "Luis",
+      "apellido": "Fernández",
+      "email": "luis.fernandez@gmail.com",
+      "contraseña": "Luis7890!"
+    }
+  ]
+  
