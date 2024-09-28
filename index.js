@@ -1,36 +1,22 @@
-import { readFile } from 'fs/promises';
-import { calcular_promedio_ventas } from './utils/funciones.js';
+import express from 'express';
+import { readFile, writeFile } from 'fs/promises';
 
-async function readJSONFiles() {
-  try {
-    
-    const [usuariosFile, productosFile, ventasFile] = await Promise.all([
-      readFile('./Data/usuarios.json', 'utf-8'),
-      readFile('./Data/productos.json', 'utf-8'),
-      readFile('./Data/ventas.json', 'utf-8')
-    ]);
+import userRouter from './routes/usuario.routes.js';
+import itemsRouter from './routes/productos.routes.js';
+import saleRouter from './routes/ventas.routes.js';
 
-   
-    const usuarios = JSON.parse(usuariosFile);
-    const productos = JSON.parse(productosFile);
-    const ventas = JSON.parse(ventasFile);
+const app = express();
+const port = 3000;
 
-    
-    console.log('Usuarios:', usuarios);
-    console.log('Productos:', productos);
-    console.log('Ventas:', ventas);
+app.use(express.json());
 
-    
-    const promedioVentas = calcular_promedio_ventas(ventas);
-    console.log(`El promedio de ventas es: ${promedioVentas.toFixed(2)}`);
-  } catch (error) {
-    console.error('Error al leer los archivos JSON:', error);
-  }
-}
+app.listen(port, () => {
+    console.log(`Servidor levantado en puerto ${port}`);
+});
 
-
-readJSONFiles();
-
+app.use('/user', userRouter);
+app.use('/item', itemsRouter);
+app.use('/sale', saleRouter);
 
 
 
