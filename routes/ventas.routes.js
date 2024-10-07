@@ -74,6 +74,29 @@ router.post('/add', async (req, res) => {
     await writeFile(filePath, JSON.stringify(salesData, null, 2));
     res.status(201).json('Venta agregada');
 });
+// agregado al final revisarlo back-end maneje correctamente la creación de una orden de compra.
+router.post('/add', async (req, res) => {
+    const salesData = await loadSalesData();
+    const newSale = req.body;
+
+    //  creado para Validar datos
+    if (!newSale.id_usuario || !newSale.productos || !newSale.total || !newSale.fecha) {
+        return res.status(400).json('Datos de venta incompletos');
+    }
+
+    // Asignar un nuevo ID de venta
+    newSale.id_venta = salesData.length > 0 ? salesData[salesData.length - 1].id_venta + 1 : 1;
+
+    salesData.push(newSale);
+
+    try {
+        await writeFile(filePath, JSON.stringify(salesData, null, 2));
+        res.status(201).json('Venta agregada');
+    } catch (error) {
+        console.error(error);
+        res.status(500).json('Error al agregar la venta');
+    }
+});
 
 router.delete('/delete/:id', async (req, res) => {
     const salesData = await loadSalesData();
