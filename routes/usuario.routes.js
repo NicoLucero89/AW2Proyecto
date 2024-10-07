@@ -28,12 +28,18 @@ router.post('/login', async (req, res) => {
     const result = userData.find(e => e.email === email && e.contraseña === contraseña);
 
     if (result) {
-        res.status(200).json(`Bienvenido ${result.nombre}`);
-           
-
+        const data = {
+            nombre: result.nombre,
+            apellido: result.apellido,
+            email: result.email,
+            status: true
+               
     } 
+        console.log(data)
+        res.status(200).json(data)
+    }
     else {
-        res.status(400).json(`${email} no se encuentra`);
+        res.status(400).json({status:false})
     }
 });
 
