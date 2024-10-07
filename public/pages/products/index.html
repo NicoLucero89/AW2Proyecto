@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-950 text-gray-300">
+   
+    <header class="bg-gray-800 p-4 flex justify-between items-center">
+        <h1 class="text-3xl">Tienda de Electrónica</h1>
+        <div>
+            <a href="/pages/cart/index.html" class="bg-rose-500 hover:bg-rose-600 text-white py-2 px-4 rounded">Carrito</a>
+            <button id="logoutBtn" class="ml-4 bg-gray-700 hover:bg-gray-600 text-white py-2 px-4 rounded">Cerrar Sesión</button>
+        </div>
+    </header>
+
+    
+    <div class="container mx-auto p-5">
+       
+        <div class="mb-5"> <!-- Filtros -->
+            <label for="categoryFilter" class="mr-2">Filtrar por Categoría:</label>
+            <select id="categoryFilter" class="bg-gray-700 text-gray-200 p-2 rounded">
+                <option value="">Todas</option>
+                <option value="Dispositivos de Computación">Dispositivos de Computación</option>
+                <option value="Accesorios de Audio">Accesorios de Audio</option>
+                <option value="Dispositivos Móviles">Dispositivos Móviles</option>
+            </select>
+        </div>
+
+        
+        <div id="productsContainer" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        </div>
+    </div>
+
+    <!-- script de  los productos -->
+    <script type="module" src="./products.js"></script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito de Compras</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-950 text-gray-300">
+    <header class="bg-gray-800 p-4 flex justify-between items-center">
+        <h1 class="text-3xl">Tu Carrito</h1>
+        <div>
+            <a href="/pages/products/index.html" class="bg-gray-700 hover:bg-gray-600 text-white py-2 px-4 rounded">Productos</a>
+            <button id="logoutBtn" class="ml-4 bg-gray-700 hover:bg-gray-600 text-white py-2 px-4 rounded">Cerrar Sesión</button>
+        </div>
+    </header>
+
+    <div class="container mx-auto p-5">
+        <div id="cartContainer" class="space-y-4">
+            <!-- aqui se visulizarian los productos contenidos en el carrito -->
+        </div>
+        <div class="mt-5 flex justify-between items-center">
+            <p class="text-2xl">Total: $<span id="totalPrice">0</span></p>
+            <button id="checkoutBtn" class="bg-rose-500 hover:bg-rose-600 text-white py-2 px-4 rounded">Comprar</button>
+        </div>
+    </div>
+
+    <script type="module" src="./cart.js"></script>
+</body>
+</html>
+
