@@ -10,29 +10,44 @@ const loadItemsData = async () => {
     return JSON.parse(fileItems);
 };
 
+// agregado al crear la pagina revisar si funciona
+router.get('/getAll', async (req, res) => {
+    try {
+        const itemsData = await loadItemsData();
+        res.status(200).json(itemsData);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ status: false, message: 'Error al obtener los productos' });
+    }
+});
 router.get('/byId/:id', async (req, res) => {
-    const itemsData = await loadItemsData();
-    const id = parseInt(req.params.id);
-    const result = itemsData.find(e => e.id === id);
-
-    if(result) {
-        res.status(200).json(result);
-    } else {
-        res.status(400).json(`${id} no se encuentra`);
+    try {
+        const itemsData = await loadItemsData();
+        const id = parseInt(req.params.id);
+        const product = itemsData.find(item => item.id === id);
+        if (product) {
+            res.status(200).json(product);
+        } else {
+            res.status(404).json({ status: false, message: `Producto con ID ${id} no encontrado` });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ status: false, message: 'Error al obtener el producto' });
     }
 });
 
-router.get('/byCategory/:category', async (req, res) => {
-    const itemsData = await loadItemsData();
-    const category = req.params.category;
-    const result = itemsData.filter(e => e.categoria === category);
-
-    if(result.length > 0) {
-        res.status(200).json(result);
-    } else {
-        res.status(400).json(`${category} no se encuentra, intente con su ID`);
+// Ruta para obtener todas las categorías
+router.get('/categories', async (req, res) => {
+    try {
+        const itemsData = await loadItemsData();
+        const categories = [...new Set(itemsData.map(product => product.categoria))];
+        res.status(200).json(categories);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ status: false, message: 'Error al obtener las categorías' });
     }
 });
+
 
 router.post('/add', async (req, res) => {
     const itemsData = await loadItemsData();
