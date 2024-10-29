@@ -1,26 +1,26 @@
 import { Router } from "express";
 import { readFile, writeFile } from 'fs/promises';
+import { createProd, findAll, findById, findByCategory, updateNameById, deleteById } from "../db/actions/producto.actions.js";
 
 const router = Router();
 const filePath = './data/productos.json';
 
-/* RUTAS DE ITEMS */
 const loadItemsData = async () => {
     const fileItems = await readFile(filePath, 'utf-8');
     return JSON.parse(fileItems);
 };
 
-// agregado al crear la pagina revisar si funciona
-router.get('/getAll', async (req, res) => {
-    try {
-        const itemsData = await loadItemsData();
-        res.status(200).json(itemsData);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ status: false, message: 'Error al obtener los productos' });
+router.get('/all',async(req,res)=>{
+    try{
+        const result = await findAll()
+        
+        res.status(200).json(result)
+    }catch(error){
+        res.status(400).json()
     }
-});
-router.get('/byId/:id', async (req, res) => {
+})
+
+/*router.get('/byId/:id', async (req, res) => {
     try {
         const itemsData = await loadItemsData();
         const id = parseInt(req.params.id);
@@ -34,9 +34,30 @@ router.get('/byId/:id', async (req, res) => {
         console.error(error);
         res.status(500).json({ status: false, message: 'Error al obtener el producto' });
     }
-});
+});*/ // asi estaba antes,del mongodb
 
-// Ruta para obtener todas las categorías
+
+router.get('/byId/:id',async(req,res)=>{// agregado al ultimo ,probado ocn postman
+    const id = req.params.id
+    try{
+        const result = await findById(id)
+        res.status(200).json(result)
+    }catch(error){
+        res.status(400).json()
+    }
+})
+
+router.get('/byCategory/:category',async(req,res)=>{
+    const category = req.params.category
+    
+    try{
+        const result = await findByCategory(category)
+        res.status(200).json(result)
+    }catch(error){
+        res.status(400).json()
+    }
+})
+
 router.get('/categories', async (req, res) => {
     try {
         const itemsData = await loadItemsData();
@@ -48,7 +69,6 @@ router.get('/categories', async (req, res) => {
     }
 });
 
-
 router.post('/add', async (req, res) => {
     const itemsData = await loadItemsData();
     const newItem = req.body;
@@ -56,6 +76,29 @@ router.post('/add', async (req, res) => {
 
     await writeFile(filePath, JSON.stringify(itemsData, null, 2));
     res.status(201).json('Producto agregado');
+});
+
+router.post('/create', async (req, res) => {
+    const { nombre, descripcion, stock, precio, categoria } = req.body;
+
+    try {
+        const result = await createProd({ nombre, descripcion, stock, precio, categoria });
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(400).json({ error: error.message }); // Incluye el mensaje de error para más información
+    }
+});
+
+router.patch('/updateByName/:id', async (req, res) => {
+    const id = req.params.id;
+    const { nombre } = req.body;
+
+    try {
+        const result = await updateNameById(nombre, id);
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(400).json();
+    }
 });
 
 router.put('/changePrice', async (req, res) => {
@@ -79,6 +122,19 @@ router.put('/changePrice', async (req, res) => {
     }
 });
 
+router.patch('/updateByName/:id',async(req,res)=>{
+    const id = req.params.id
+    const {nombre} = req.body
+  
+    try{
+        const result = await updateNameById(nombre, id)
+       
+        res.status(200).json(result)
+    }catch(error){
+        res.status(400).json()
+    }
+})
+
 router.delete('/delete/:id', async (req, res) => {
     const itemsData = await loadItemsData();
     const id = parseInt(req.params.id);
@@ -93,4 +149,17 @@ router.delete('/delete/:id', async (req, res) => {
     }
 });
 
+router.delete('/deleteById/:id',async(req,res)=>{
+    const id = req.params.id
+  
+    try{
+        const result = await deleteById(id)
+       
+        res.status(200).json(result)
+    }catch(error){
+        res.status(400).json()
+    }
+})
 export default router;
+
+
