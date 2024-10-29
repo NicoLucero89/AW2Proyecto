@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { readFile, writeFile } from 'fs/promises';
 import { get_user_byId } from "../utils/usuario.js";
+import { createSale,findById,findAll } from "../db/actions/venta.actions.js";// agregado al ultimo
 
 const router = Router();
 const filePath = './data/ventas.json';
@@ -11,7 +12,7 @@ const loadSalesData = async () => {
     return JSON.parse(fileSales);
 };
 
-router.get('/all', async (req, res) => {
+/*router.get('/all', async (req, res) => {
     const salesData = await loadSalesData();
 
     if(salesData.length) {
@@ -19,7 +20,50 @@ router.get('/all', async (req, res) => {
     } else {
         res.status(400).json(`No hay ventas`);
     }
+});*/
+
+router.get('/all',async(req,res)=>{
+    try{
+        const result = await findAll()
+        res.status(200).json(result)
+    }catch(error){
+        res.status(400).json()
+    }
+})
+
+
+
+router.post('/create', async (req, res) => {
+    const { productos, total, usuario } = req.body;
+  
+    try {
+        const result = await createSale({ productos, total, usuario });
+        res.status(201).json(result);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
 });
+
+/*
+router.post('/create',async(req,res)=>{
+    const {productos, total, usuario} = req.body
+    try{
+        const result = await createSale({productos, total, usuario})
+        res.status(200).json(result)
+    }catch(error){
+        res.status(400).json()
+    }
+})*/
+
+router.get('/byId/:id',async(req,res)=>{// agregado al ultimo 
+    const id = req.params.id
+    try{
+        const result = await findById(id)
+        res.status(200).json(result)
+    }catch(error){
+        res.status(400).json()
+    }
+})
 
 router.get('/byDate/:from/:to', async (req, res) => {
     const salesData = await loadSalesData();
