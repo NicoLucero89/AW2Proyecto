@@ -2,13 +2,16 @@ import { Router } from "express";
 import { readFile, writeFile } from 'fs/promises';
 import { createProd, findAll, findById, findByCategory, updateNameById, deleteById } from "../db/actions/producto.actions.js";
 
+import connection from "../connection.js"//revisar
+
 const router = Router();
-const filePath = './data/productos.json';
+const filePath = './data/productos.json'; 
 
 const loadItemsData = async () => {
     const fileItems = await readFile(filePath, 'utf-8');
     return JSON.parse(fileItems);
 };
+
 
 router.get('/all',async(req,res)=>{
     try{
@@ -121,6 +124,33 @@ router.put('/changePrice', async (req, res) => {
         res.status(500).json('Error al actualizar el producto');
     }
 });
+// utilizado para Mysql
+router.put('/changePrice',(req, res)=>{
+
+    const data = {
+        id : parseInt(req.body.id),
+        newPrice : parseFloat(req.body.newPrice),
+        type: parseInt(req.body.type)
+    }
+
+    const column = data.type == 1 ? 'purchase_price' : 'selling_price'
+
+    try {
+        const query = `UPDATE items SET ${column} = ? WHERE id = ?`
+        connection.query(query,[data.newPrice, data.id],(error, results)=>{
+            if(error){
+                console.log('Error al ejecutar la query', error)
+                res.send(500).json('Error al ejecutar la consulta')
+           }else{
+                res.status(200).json(results)
+           }
+        })  
+    } catch (error) {
+        res.send(500).json('Error al ejecutar la consulta', error)
+    }
+
+})
+// 
 
 router.patch('/updateByName/:id',async(req,res)=>{
     const id = req.params.id
