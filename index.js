@@ -1,4 +1,5 @@
 import express from 'express';
+
 import mongoose from 'mongoose';
 import { readFile, writeFile } from 'fs/promises';
 import cors from 'cors'//agregado ultimo
@@ -22,9 +23,10 @@ const port = process.env.PORT;
 
 app.use(express.json());
 
+
 // CORS (Cross-Origin Resource Sharing) mecanismo de seguridad
 app.use(cors({
-    origin:'http://127.0.0.1:5500'// revisar el origen 
+    origin:'http://127.0.0.1:5500'// revisar el origen y corregir 
 }))
 // inicia el servidor
 app.listen(port, () => {
@@ -45,7 +47,6 @@ app.use(express.static('./public'))
 /*RUTAS DE END-POINT */
 app.use('/user', userRouter)
 app.use('/posts', postRouter)// para los post
-
 
 
 
