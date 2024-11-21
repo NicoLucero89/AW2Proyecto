@@ -3,6 +3,9 @@ import { readFile, writeFile } from 'fs/promises';
 import { get_user_byId } from "../utils/usuario.js";
 import { createSale,findById,findAll } from "../db/actions/venta.actions.js";// agregado al ultimo
 
+import connection from "../connection.js"// Mysql
+import { generate_id } from "../utils/ventas.js";//Mysql
+
 const router = Router();
 const filePath = './data/ventas.json';
 
@@ -155,5 +158,32 @@ router.delete('/delete/:id', async (req, res) => {
         res.status(400).json('Venta no encontrada');
     }
 });
+
+// utilizado para Mysql
+
+router.post('/add',(req, res)=>{
+
+    const producto = parseInt(req.body.producto)
+    const total = parseFloat(req.body.total)
+    const vendedor = parseInt(req.body.vendedor)
+
+    const id = generate_id(item, vendedor)
+
+    try {
+        const query = `INSERT INTO sales (id, producto, total, vendedor) VALUES (?,?,?,?)`
+
+        connection.query(query, [id,producto,total, vendedor], (error, results) =>{
+           if(error){
+                console.log('Error al ejecutar la query', error)
+                res.send(500).json('Error al ejecutar la consulta')
+           }else{
+                res.status(200).json(results)
+           }
+        })
+    } catch (error) {
+        res.send(500).json('Error al ejecutar la consulta', error)
+    }
+
+})
 
 export default router;
