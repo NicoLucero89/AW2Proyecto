@@ -1,10 +1,6 @@
 import mongoose from 'mongoose'
 import 'dotenv/config'
 
-
-
-
-
 const MONGODB_URI = process.env.MONGODB_URI;
 
 let cached = global.mongoose || {conn: null, promise:null}
