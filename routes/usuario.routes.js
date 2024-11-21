@@ -4,6 +4,8 @@ import bcrypt from 'bcryptjs' // agregado ultimo
 import jwt from 'jsonwebtoken'// agregado ultimo
 import { decodeToken } from "../utils/middleware.js";
 
+import connection from "../connection.js"
+
 const router = Router();
 const filePath = './data/usuarios.json';
 
@@ -35,7 +37,25 @@ router.get('/byId/:id', async (req, res) => {
         res.status(400).json(`${id} no se encuentra`);
     }
 });
- 
+
+ // utilziado para Mysql
+router.get('/byId/:id', (req,res)=>{
+
+    const id = req.params.id
+
+    const query = `SELECT * FROM users WHERE id = ?`
+
+    connection.query(query,[id],(error, results)=>{
+        if(error){
+            console.log('Error al ejecutar la query', error)
+            res.send(500).json('Error al ejecutar consulta')
+        }else{
+            res.status(200).json(results)
+        }
+    })
+})
+//
+
 router.post('/login', async (req, res) => {
     const userData = await loadUserData();
     const { email, contraseña } = req.body;
@@ -121,3 +141,4 @@ router.post('/decodeToken',async (req,res)=>{
 })
 
 export default router;
+
